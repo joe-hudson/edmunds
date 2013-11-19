@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<!-- I started with code from cmendes0101 (http://github.com/cmendes0101/edmunds-api-vehicle-select)
-     and then modified it to take in condition, mileage and zip code inputs and return the value more clearly
-     and human readble.
+<!--
+  I started with code from cmendes0101 (http://github.com/cmendes0101/edmunds-api-vehicle-select)
+and then modified it to take in condition, mileage and zip code inputs and return the value more clearly
+and human readble.
 -->
 
 <html>
@@ -11,7 +12,7 @@
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script>
-        var EDMUNDS_API_KEY = "ENTER API KEY HERE";
+        var EDMUNDS_API_KEY = '<API KEY>';
         function get_makes(year) {
             url = "http://api.edmunds.com/api/vehicle/v2/makes?fmt=json&year=" + year + "&api_key=" + EDMUNDS_API_KEY;
             $.ajax({
@@ -26,6 +27,8 @@
                         $('#makes').append("<option value='" + data.makes[i].niceName + "'>" + data.makes[i].name + "</option>");
                     });
                     $('#makes').removeAttr('disabled');
+                    $('#vin').attr('disabled', 'disabled');
+                    $('#final_year').val(year);
                     //console.log('Step 2: Makes select was populated and enabled');
                 }
             });
@@ -45,6 +48,7 @@
                         $('#models').append("<option value='" + data.models[i].niceName + "'>" + data.models[i].name + "</option>");
                     });
                     $('#models').removeAttr('disabled');
+                    $('#final_make').val(make);
                     //console.log('Step 4: Models select was populated and enabled');
                 }
             });
@@ -66,6 +70,7 @@
                         $('#styles').append("<option value='" + data.styleHolder[i].id + "'>" + data.styleHolder[i].name + "</option>");
                     });
                     $('#styles').removeAttr('disabled');
+                    $('#final_model').val(model);
                     //console.log('Step 6: Styles(trim) select was populated and enabled');
                 }
             });
@@ -80,12 +85,13 @@
                 dataType: 'jsonp',
                 success: function(data) {
                     //console.log('Step 8: Collecting Style/trim data');
+                $('#final_trim').val($('#styles').val());
                 }
             });
         }
 
         function get_value(style_id, cond, mileage, zip){
-            var final_id = $("#styles").val();
+            var final_id = $("#final_trim").val();
             var final_cond = $('#condition').val();
             var final_miles = $('#mileage').val();
             var final_zip = $('#zip').val();
@@ -98,13 +104,28 @@
                 data: '',
                 dataType: 'jsonp',
                 success: function(data){
-                    var value = data.tmv['totalWithOptions'].usedPrivateParty;
-                    //console.log("print price ->" + data.tmv['totalWithOptions'].usedPrivateParty);
-                    //console.log(JSON.stringify(data));
-                    $('#details').html("The private party price for this vehicle is: $" + value);
-
+                    var trade_value = data.tmv['totalWithOptions'].usedTradeIn;
+                    //console.log("print price ->" + data.tmv['totalWithOptions'].usedTradeIn);
+                    $('#trade_in_value').val('$' + trade_value);
                 }
             });
+        }
+
+        function value_from_vin(vin){
+            url = "https://api.edmunds.com/api/vehicle/v2/vins/" + vin + "?fmt=json&api_key=" + EDMUNDS_API_KEY;
+            //https://api.edmunds.com/api/vehicle/v2/vins/ VIN ?fmt=json&api_key=<API KEY>
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: '',
+                dataType: 'jsonp',
+                success: function(data){
+                    $('#final_year').val(data.years[0].year);
+                    $('#final_make').val(data.make['name'])
+                    $('#final_model').val(data.model['name']);
+                    $('#final_trim').val(data.years[0].styles[0].id);
+                }
+            })
         }
 
         $(document).ready(function() {
@@ -129,7 +150,6 @@
                 get_style_details($(this).val());
             });
 
-
             $('#condition').change(function(){
                 //console.log('Step 9: Condition ' + $(this).val() + ' was selected');
             });
@@ -144,6 +164,11 @@
                 $(this).attr('value', $(this).val());
             });
 
+            $('#vin').change(function(){
+                //console.log('VIN was entered')
+                value_from_vin($(this).val());
+            })
+
             $('#submit').click(function(){
                 get_value()
             })
@@ -152,7 +177,9 @@
 </head>
 
 <body>
+    <div align='center'>
     <br /><br />
+    Select vehicle:<br>
     <select id="years" name="years">
         <option>Select Year</option>
         <option>1990</option>
@@ -188,7 +215,12 @@
     <select id="styles" name="styles" disabled="disabled">
         <option>Select Trim</option>
     </select>
-    <br>
+    <br><br>
+    Or<br>
+    Enter VIN: <input type='text' id='vin' value=''></input>
+    <br><br><br>
+    Then
+    <br><br>
     <select id="condition" id="condition">
         <option>Select Condition</option>
         <option value="outstanding">Outstanding</option>
@@ -196,12 +228,21 @@
         <option value="average">Average</option>
         <option value="rough">Rough</option>
         <option value="damaged">Damaged</option>
-    </select>
-    Mileage: <small>(example: for 25,000 miles, enter "25000")</small><input type="text" id="mileage" value=""></input>
-    Zip Code: <input type="text" id="zip" value=""></input>
-    <button type="button" id='submit'>Submit</button>
-    <br /><br /><br /><br />
-    <div id="details">No Vehicle Selected Yet!</div>
+    </select><br><br>
+    Mileage:<input type="text" id="mileage" value=""></input><br>(example: for 25,000 miles, enter "25000")<br><br>
+    Zip code<input type="text" id="zip" value=""></input><br>
+    <br />
+    <div id="error" style="color:red"></div><br>
+    Vehicle information:<br>
+    <input type='text' id='final_year' value='Year' disabled='disabled'></input><br>
+    <input type='text' id='final_make' value='Make' disabled='disabled' style='text-transform:capitalize'></input><br>
+    <input type='text' id='final_model' value='Model' disabled='disabled' style='text-transform:capitalize'></input><br>
+    <input type='text' id='final_trim' value='Trim' disabled='disabled'></input>
+    <br>
+    <button type="button" id='submit'>Submit</button><br><br>
+    <input type='text' id='trade_in_value' value='Value' disabled='disabled'></input><br>Trade-in value<br>
+    <br><br>
+</div>
 </body>
 
 </html>
