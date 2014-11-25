@@ -10,10 +10,9 @@ Starting again.
 
 <head>
     <TITLE>Edmunds.com Used Car Value API</TITLE>
-
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script>
-        var EDMUNDS_API_KEY = '<API KEY>';
+        var EDMUNDS_API_KEY = '2peh96tx2669cqfde2ynys8r';
         function get_makes(year) {
             url = "http://api.edmunds.com/api/vehicle/v2/makes?fmt=json&year=" + year + "&api_key=" + EDMUNDS_API_KEY;
             $.ajax({
