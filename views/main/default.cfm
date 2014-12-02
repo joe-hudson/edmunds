@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <!---
   I started with code from cmendes0101 (http://github.com/cmendes0101/edmunds-api-vehicle-select)
 and then modified it to take in condition, mileage and zip code inputs and return the value more clearly
@@ -10,50 +9,57 @@ Starting again.
     <head>
         <TITLE>Edmunds.com Used Car Value API</TITLE>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
         <script src="./js/edmunds.js"></script>
     </head>
+    <style>
+        .select {
+            width: 200px;
+        }
+    </style>
     <body>
         <div align='center'>
-            <label>Select vehicle:
-                <select id="years" name="years">
-                    <option>Select Year</option>
-                    <option>2014</option>
-                    <option>2013</option>
-                    <option>2012</option>
-                    <option>2011</option>
-                    <option>2010</option>
-                    <option>2009</option>
-                    <option>2008</option>
-                    <option>2007</option>
-                    <option>2006</option>
-                    <option>2005</option>
-                    <option>2004</option>
-                    <option>2003</option>
-                    <option>2002</option>
-                    <option>2001</option>
-                    <option>2000</option>
-                    <option>1999</option>
-                    <option>1998</option>
-                    <option>1997</option>
-                    <option>1996</option>
-                    <option>1995</option>
-                    <option>1994</option>
-                    <option>1993</option>
-                    <option>1992</option>
-                    <option>1991</option>
-                    <option>1990</option>
-                </select>
-            </label>
+            <!---<label>Select vehicle:--->
+            <select class="select" id="years" name="years">
+                <option>Select Year</option>
+                <option>2014</option>
+                <option>2013</option>
+                <option>2012</option>
+                <option>2011</option>
+                <option>2010</option>
+                <option>2009</option>
+                <option>2008</option>
+                <option>2007</option>
+                <option>2006</option>
+                <option>2005</option>
+                <option>2004</option>
+                <option>2003</option>
+                <option>2002</option>
+                <option>2001</option>
+                <option>2000</option>
+                <option>1999</option>
+                <option>1998</option>
+                <option>1997</option>
+                <option>1996</option>
+                <option>1995</option>
+                <option>1994</option>
+                <option>1993</option>
+                <option>1992</option>
+                <option>1991</option>
+                <option>1990</option>
+            </select>
+            <!---</label>--->
             <br>
-            <select id="makes" name="makes" disabled="disabled">
+            <select class="select" id="makes" name="makes" disabled="disabled">
                 <option>Select Make</option>
             </select>
             <br>
-            <select id="models" name="models" disabled="disabled">
+            <select class="select" id="models" name="models" disabled="disabled">
                 <option>Select Model</option>
             </select>
             <br>
-            <select id="styles" name="styles" disabled="disabled">
+            <select class="select" id="styles" name="styles" disabled="disabled">
                 <option>Select Trim</option>
             </select>
             <br>
@@ -64,7 +70,7 @@ Starting again.
             </label>
             <br>
             <label>Then
-                <select id="condition" id="condition">
+                <select class="select" id="condition" id="condition">
                     <option>Select Condition</option>
                     <option value="outstanding">Outstanding</option>
                     <option value="clean">Clean</option>
@@ -115,6 +121,9 @@ Starting again.
     </body>
     <script type="text/javascript">
         $(document).ready(function() {
+            
+            $(".select").selectmenu();
+
             $('#years').change(function() {
                 //console.log('Step 1: Year ' + $(this).val() + ' was selected');
                 get_makes($(this).val());
