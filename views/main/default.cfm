@@ -51,23 +51,29 @@ Starting again.
             </select>
             <!---</label>--->
             <br>
+            <br>
             <select class="select" id="makes" name="makes" disabled="disabled">
                 <option>Select Make</option>
             </select>
+            <br>
             <br>
             <select class="select" id="models" name="models" disabled="disabled">
                 <option>Select Model</option>
             </select>
             <br>
+            <br>
             <select class="select" id="styles" name="styles" disabled="disabled">
                 <option>Select Trim</option>
             </select>
             <br>
+            <br>
             Or
+            <br>
             <br>
             <label>Enter VIN:
                 <input type='text' id='vin' value='' />
             </label>
+            <br>
             <br>
             <label>Then
                 <select class="select" id="condition" id="condition">
@@ -80,20 +86,27 @@ Starting again.
                 </select>
             </label>
             <br>
+            <br>
             <label>Mileage:
                 <input type="text" id="mileage" value="" />
             </label>
             <br>
             (example: for 25,000 miles, enter "25000")
             <br>
+            <br>
             <label>Zip code:
                 <input type="text" id="zip" value="" />
             </label>
             <br>
+            <br>
             <div id="error" style="color:red">
             </div>
             <br>
+            <br>
             <button type="button" id='submit'>Submit</button><br><br>
+            <br>
+            <br>
+            <br>
             <br>
             <label>Vehicle information:
                 <br>
@@ -119,54 +132,5 @@ Starting again.
             </label>
         </div>
     </body>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            
-            $(".select").selectmenu();
-
-            $('#years').change(function() {
-                //console.log('Step 1: Year ' + $(this).val() + ' was selected');
-                get_makes($(this).val());
-            });
-
-            $('#makes').change(function() {
-                //console.log('Step 3: Make ' + $(this).val() + ' was selected');
-                get_models($(this).val(), $('#years').val());
-            });
-
-            $('#models').change(function() {
-                //console.log('Step 5: Model ' + $(this).val() + ' was selected');
-                get_styles($('#makes').val(), $(this).val(), $("#years").val());
-            });
-
-            $('#styles').change(function() {
-                //console.log('Step 7: Style ' + $(this).val() + ' was selected');
-                get_style_details($(this).val());
-            });
-
-            $('#condition').change(function(){
-                //console.log('Step 9: Condition ' + $(this).val() + ' was selected');
-            });
-
-            $('#mileage').change(function(){
-                //console.log('Step 10: Mileage set to ' + $(this).val());
-                $(this).attr('value', $(this).val());
-            });
-
-            $('#zip').change(function(){
-                //console.log('Step 11: Zip code set to ' + $(this).val());
-                $(this).attr('value', $(this).val());
-            });
-
-            $('#vin').change(function(){
-                //console.log('VIN was entered')
-                value_from_vin($(this).val());
-            });
-
-            $('#submit').click(function(){
-                get_value()
-            });
-        });
-    </script>
 </html>
 

@@ -1,5 +1,6 @@
 var EDMUNDS_API_KEY = '2peh96tx2669cqfde2ynys8r';
 
+
 function get_makes(year) {
     url = "http://api.edmunds.com/api/vehicle/v2/makes?fmt=json&year=" + year + "&api_key=" + EDMUNDS_API_KEY;
     $.ajax({
@@ -114,3 +115,51 @@ function value_from_vin(vin){
         }
     })
 }
+
+$(function() {
+    
+    //$(".select").selectmenu();
+
+    $('#years').change(function() {
+        //console.log('Step 1: Year ' + $(this).val() + ' was selected');
+        get_makes($(this).val());
+    });
+
+    $('#makes').change(function() {
+        //console.log('Step 3: Make ' + $(this).val() + ' was selected');
+        get_models($(this).val(), $('#years').val());
+    });
+
+    $('#models').change(function() {
+        //console.log('Step 5: Model ' + $(this).val() + ' was selected');
+        get_styles($('#makes').val(), $(this).val(), $("#years").val());
+    });
+
+    $('#styles').change(function() {
+        //console.log('Step 7: Style ' + $(this).val() + ' was selected');
+        get_style_details($(this).val());
+    });
+
+    $('#condition').change(function(){
+        //console.log('Step 9: Condition ' + $(this).val() + ' was selected');
+    });
+
+    $('#mileage').change(function(){
+        //console.log('Step 10: Mileage set to ' + $(this).val());
+        $(this).attr('value', $(this).val());
+    });
+
+    $('#zip').change(function(){
+        //console.log('Step 11: Zip code set to ' + $(this).val());
+        $(this).attr('value', $(this).val());
+    });
+
+    $('#vin').change(function(){
+        //console.log('VIN was entered')
+        value_from_vin($(this).val());
+    });
+
+    $('#submit').click(function(){
+        get_value()
+    });
+});
