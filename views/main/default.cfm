@@ -75,12 +75,12 @@ Starting again.
             </label>
             <br>
             <br>
-            <label>Then
+            <label>Condition:
                 <select class="select" id="condition" id="condition">
                     <option>Select Condition</option>
                     <option value="outstanding">Outstanding</option>
                     <option value="clean">Clean</option>
-                    <option value="average">Average</option>
+                    <option value="average" selected>Average</option>
                     <option value="rough">Rough</option>
                     <option value="damaged">Damaged</option>
                 </select>
@@ -102,9 +102,7 @@ Starting again.
             <div id="error" style="color:red">
             </div>
             <br>
-            <br>
             <button type="button" id='submit'>Submit</button><br><br>
-            <br>
             <br>
             <br>
             <br>

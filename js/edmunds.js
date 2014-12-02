@@ -1,5 +1,7 @@
 var EDMUNDS_API_KEY = '2peh96tx2669cqfde2ynys8r';
 
+var currDate = new Date();
+var currYear = currDate.getFullYear();
 
 function get_makes(year) {
     url = "http://api.edmunds.com/api/vehicle/v2/makes?fmt=json&year=" + year + "&api_key=" + EDMUNDS_API_KEY;
@@ -16,6 +18,9 @@ function get_makes(year) {
             });
             $('#makes').removeAttr('disabled');
             $('#vin').attr('disabled', 'disabled');
+            var ageOfCar = currYear - year;
+            var defaultMileage = 10000 * ageOfCar;
+            $("#mileage").val(defaultMileage);
             $('#final_year').val(year);
             //console.log('Step 2: Makes select was populated and enabled');
         }
