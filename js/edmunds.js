@@ -9,6 +9,7 @@ var CAR = {
     defaultMileage: "",
     make: "",
     model: "",
+    model_name: "",
     style: ""
 };
 
@@ -34,8 +35,8 @@ function get_makes() {
     });
 }
 
-function get_models(make, year) {
-    url = "http://api.edmunds.com/api/vehicle/v2/"+ make + "/models?fmt=json&api_key=" + EDMUNDS_API_KEY + "&year=" + year;
+function get_models() {
+    url = "http://api.edmunds.com/api/vehicle/v2/"+ CAR.make + "/models?fmt=json&api_key=" + EDMUNDS_API_KEY + "&year=" + CAR.year;
     $.ajax({
         type: "POST",
         url: url,
@@ -48,14 +49,14 @@ function get_models(make, year) {
                 $('#models').append("<option value='" + data.models[i].niceName + "'>" + data.models[i].name + "</option>");
             });
             $('#models').removeAttr('disabled');
-            $('#final_make').val(make);
+            $('#final_make').val(CAR.make);
             //console.log('Step 4: Models select was populated and enabled');
         }
     });
 }
 
-function get_styles(make, model, year) {
-    url = 'http://api.edmunds.com/v1/api/vehicle/stylerepository/findstylesbymakemodelyear?make=' + make + '&model=' + model + '&year=' + year + '&api_key=' + EDMUNDS_API_KEY + '&fmt=json';
+function get_styles() {
+    url = 'http://api.edmunds.com/v1/api/vehicle/stylerepository/findstylesbymakemodelyear?make=' + CAR.make + '&model=' + CAR.model + '&year=' + CAR.year + '&api_key=' + EDMUNDS_API_KEY + '&fmt=json';
     $.ajax({
         type: "POST",
         timeout: 20000,
@@ -70,7 +71,7 @@ function get_styles(make, model, year) {
                 $('#styles').append("<option value='" + data.styleHolder[i].id + "'>" + data.styleHolder[i].name + "</option>");
             });
             $('#styles').removeAttr('disabled');
-            $('#final_model').val(model);
+            $('#final_model').val(CAR.model_name);
             //console.log('Step 6: Styles(trim) select was populated and enabled');
         }
     });
@@ -130,10 +131,7 @@ function value_from_vin(vin){
 
 $(function() {
     
-    //$(".select").selectmenu();
-
     $('#years').change(function() {
-        //console.log('Step 1: Year ' + $(this).val() + ' was selected');
         CAR.year = $(this).val();
         CAR.age = currYear - CAR.year;
         CAR.defaultMileage = 10000 * CAR.age;
@@ -141,13 +139,15 @@ $(function() {
     });
 
     $('#makes').change(function() {
-        //console.log('Step 3: Make ' + $(this).val() + ' was selected');
-        get_models($(this).val(), $('#years').val());
+        CAR.make = ($(this).val());
+        get_models();
     });
 
     $('#models').change(function() {
         //console.log('Step 5: Model ' + $(this).val() + ' was selected');
-        get_styles($('#makes').val(), $(this).val(), $("#years").val());
+        CAR.model = $(this).val();
+        CAR.model_name = $(this).find("option:selected").html();
+        get_styles();
     });
 
     $('#styles').change(function() {
