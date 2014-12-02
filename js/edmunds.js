@@ -4,21 +4,28 @@ var currDate = new Date();
 var currYear = currDate.getFullYear();
 
 var CAR = {
+    condition: "",
+    locale: "",
     year: "",
     age: "",
-    defaultMileage: "",
+    mileage: "",
     make: "",
     model: "",
     model_name: "",
-    style: ""
+    style: "",
+    style_id: ""
 };
 
 function get_makes() {
-    url = "http://api.edmunds.com/api/vehicle/v2/makes?fmt=json&year=" + CAR.year + "&api_key=" + EDMUNDS_API_KEY;
+    url = "http://api.edmunds.com/api/vehicle/v2/makes";
     $.ajax({
         type: "POST",
         url: url,
-        data: '',
+        data: {
+            fmt: "json",
+            year: CAR.year,
+            api_key: EDMUNDS_API_KEY
+        },
         dataType: 'jsonp',
         success: function(data) {
             $('#makes').empty();
@@ -28,19 +35,22 @@ function get_makes() {
             });
             $('#makes').removeAttr('disabled');
             $('#vin').attr('disabled', 'disabled');
-            $("#mileage").val(CAR.defaultMileage);
+            $("#mileage").val(CAR.mileage);
             $('#final_year').val(CAR.year);
-            //console.log('Step 2: Makes select was populated and enabled');
         }
     });
 }
 
 function get_models() {
-    url = "http://api.edmunds.com/api/vehicle/v2/"+ CAR.make + "/models?fmt=json&api_key=" + EDMUNDS_API_KEY + "&year=" + CAR.year;
+    url = "http://api.edmunds.com/api/vehicle/v2/"+ CAR.make + "/models";
     $.ajax({
         type: "POST",
         url: url,
-        data: '',
+        data: {
+            year: CAR.year,
+            fmt: "json",
+            api_key: EDMUNDS_API_KEY
+        },
         dataType: 'jsonp',
         success: function(data) {
             $('#models').empty();
@@ -50,75 +60,83 @@ function get_models() {
             });
             $('#models').removeAttr('disabled');
             $('#final_make').val(CAR.make);
-            //console.log('Step 4: Models select was populated and enabled');
         }
     });
 }
 
 function get_styles() {
-    url = 'http://api.edmunds.com/v1/api/vehicle/stylerepository/findstylesbymakemodelyear?make=' + CAR.make + '&model=' + CAR.model + '&year=' + CAR.year + '&api_key=' + EDMUNDS_API_KEY + '&fmt=json';
+    url = 'http://api.edmunds.com/v1/api/vehicle/stylerepository/findstylesbymakemodelyear';
     $.ajax({
         type: "POST",
         timeout: 20000,
         url: url,
-        data: '',
+        data: {
+            make: CAR.make,
+            model: CAR.model,
+            year: CAR.year,
+            fmt: "json",
+            api_key: EDMUNDS_API_KEY
+        },
         dataType: 'jsonp',
         success: function(data) {
             $('#styles').empty();
             $('#styles').append("<option>Select Trim</option>");
             $.each(data.styleHolder, function(i, val) {
-                //console.log(data.styleHolder[i]);
                 $('#styles').append("<option value='" + data.styleHolder[i].id + "'>" + data.styleHolder[i].name + "</option>");
             });
             $('#styles').removeAttr('disabled');
             $('#final_model').val(CAR.model_name);
-            //console.log('Step 6: Styles(trim) select was populated and enabled');
         }
     });
 }
 
-function get_style_details(style_id) {
-    url = 'http://api.edmunds.com/v1/api/vehicle/stylerepository/findbyid?id=' + style_id + '&api_key=' + EDMUNDS_API_KEY + '&fmt=json';
+function get_style_details() {
+    url = 'http://api.edmunds.com/v1/api/vehicle/stylerepository/findbyid';
     $.ajax({
         type: "POST",
         url: url,
-        data: '',
+        data: {
+            id: CAR.style_id,
+            api_key: EDMUNDS_API_KEY,
+            fmt: "json"
+        },
         dataType: 'jsonp',
         success: function(data) {
-            //console.log('Step 8: Collecting Style/trim data');
-        $('#final_trim').val($('#styles').val());
+            $('#final_trim').val(CAR.style);
         }
     });
 }
 
-function get_value(style_id, cond, mileage, zip){
-    var final_id = $("#final_trim").val();
-    var final_cond = $('#condition').val();
-    var final_miles = $('#mileage').val();
-    var final_zip = $('#zip').val();
-
-    //console.log();
-    url = "http://api.edmunds.com/v1/api/tmv/tmvservice/calculateusedtmv?styleid=" + final_id + "&condition=" + final_cond + "&mileage=" + final_miles + "&zip=" + final_zip + "&fmt=json&api_key=" + EDMUNDS_API_KEY;
+function get_value(){
+    url = "http://api.edmunds.com/v1/api/tmv/tmvservice/calculateusedtmv";
     $.ajax({
         type: "POST",
         url: url,
-        data: '',
+        data: {
+            fmt: "json",
+            api_key: EDMUNDS_API_KEY,
+            styleid: CAR.style_id,
+            condition: CAR.condition,
+            mileage: CAR.mileage,
+            zip: CAR.locale
+        },
         dataType: 'jsonp',
         success: function(data){
             var trade_value = data.tmv['totalWithOptions'].usedTradeIn;
-            //console.log("print price ->" + data.tmv['totalWithOptions'].usedTradeIn);
             $('#trade_in_value').val('$' + trade_value);
         }
     });
 }
 
 function value_from_vin(vin){
-    url = "https://api.edmunds.com/api/vehicle/v2/vins/" + vin + "?fmt=json&api_key=" + EDMUNDS_API_KEY;
-    //https://api.edmunds.com/api/vehicle/v2/vins/ VIN ?fmt=json&api_key=<API KEY>
+    url = "https://api.edmunds.com/api/vehicle/v2/vins/" + vin;
     $.ajax({
         type: "POST",
         url: url,
-        data: '',
+        data: {
+            fmt: "json",
+            api_key: EDMUNDS_API_KEY
+        },
         dataType: 'jsonp',
         success: function(data){
             $('#final_year').val(data.years[0].year);
@@ -130,11 +148,12 @@ function value_from_vin(vin){
 }
 
 $(function() {
+    CAR.condition = $("#condition").val();
     
     $('#years').change(function() {
         CAR.year = $(this).val();
         CAR.age = currYear - CAR.year;
-        CAR.defaultMileage = 10000 * CAR.age;
+        CAR.mileage = 10000 * CAR.age;
         get_makes();
     });
 
@@ -144,33 +163,30 @@ $(function() {
     });
 
     $('#models').change(function() {
-        //console.log('Step 5: Model ' + $(this).val() + ' was selected');
         CAR.model = $(this).val();
         CAR.model_name = $(this).find("option:selected").html();
         get_styles();
     });
 
     $('#styles').change(function() {
-        //console.log('Step 7: Style ' + $(this).val() + ' was selected');
-        get_style_details($(this).val());
+        CAR.style_id = $(this).val();
+        CAR.style = $(this).find("option:selected").html();
+        get_style_details();
     });
 
     $('#condition').change(function(){
-        //console.log('Step 9: Condition ' + $(this).val() + ' was selected');
+        CAR.condition = $(this).val();
     });
 
     $('#mileage').change(function(){
-        //console.log('Step 10: Mileage set to ' + $(this).val());
-        $(this).attr('value', $(this).val());
+        CAR.mileage = $(this).val();
     });
 
     $('#zip').change(function(){
-        //console.log('Step 11: Zip code set to ' + $(this).val());
-        $(this).attr('value', $(this).val());
+        CAR.locale = $(this).val();
     });
 
     $('#vin').change(function(){
-        //console.log('VIN was entered')
         value_from_vin($(this).val());
     });
 
