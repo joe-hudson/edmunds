@@ -107,28 +107,42 @@ Starting again.
             <br>
             <br>
             <br>
-            <label>Vehicle information:
-                <br>
-                <label>Year:
-                    <input type='text' id='final_year' value='Year' readonly />
-                </label>
-                <br>
-                <label>Make:
-                    <input type='text' id='final_make' value='Make' readonly style='text-transform:capitalize' />
-                </label>
-                <br>
-                <label>Model:
-                    <input type='text' id='final_model' value='Model' readonly style='text-transform:capitalize' />
-                </label>
-                <br>
-                <label>Trim ID:
-                    <input type='text' id='final_trim' value='Trim' readonly />
-                </label>
-            </label>
-            <br>
-            <label>Trade-In Value:
-                <input type='text' id='trade_in_value' value='Value' readonly />
-            </label>
+            <table>
+                <thead>
+                    <th colspan="2">Vehicle information:
+                    </th>
+                </thead>
+                <tr>
+                    <td class="label">Year:
+                    </td>
+                    <td class="input"><input type='text' id='final_year' value='Year' readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">Make:
+                    </td>
+                    <td class="input"><input type='text' id='final_make' value='Make' readonly style='text-transform:capitalize' />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">Model:
+                    </td>
+                    <td class="input"><input type='text' id='final_model' value='Model' readonly style='text-transform:capitalize' />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">Trim:
+                    </td>
+                    <td class="input"><input type='text' id='final_trim' value='Trim' readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">Trade-In Value:
+                    </td>
+                    <td class="input"><input type='text' id='trade_in_value' value='Value' readonly />
+                    </td>
+                </tr>
+            </table>
         </div>
     </body>
 </html>
