@@ -110,24 +110,24 @@ Starting again.
             <label>Vehicle information:
                 <br>
                 <label>Year:
-                    <input type='text' id='final_year' value='Year' disabled='disabled' />
+                    <input type='text' id='final_year' value='Year' readonly />
                 </label>
                 <br>
                 <label>Make:
-                    <input type='text' id='final_make' value='Make' disabled='disabled' style='text-transform:capitalize' />
+                    <input type='text' id='final_make' value='Make' readonly style='text-transform:capitalize' />
                 </label>
                 <br>
                 <label>Model:
-                    <input type='text' id='final_model' value='Model' disabled='disabled' style='text-transform:capitalize' />
+                    <input type='text' id='final_model' value='Model' readonly style='text-transform:capitalize' />
                 </label>
                 <br>
                 <label>Trim ID:
-                    <input type='text' id='final_trim' value='Trim' disabled='disabled' />
+                    <input type='text' id='final_trim' value='Trim' readonly />
                 </label>
             </label>
             <br>
             <label>Trade-In Value:
-                <input type='text' id='trade_in_value' value='Value' disabled='disabled' />
+                <input type='text' id='trade_in_value' value='Value' readonly />
             </label>
         </div>
     </body>
