@@ -120,7 +120,7 @@ Starting again.
                 <tr>
                     <td class="label">Make:
                     </td>
-                    <td class="input"><input type='text' id='final_make' value='Make' readonly style='text-transform:capitalize' />
+                    <td class="input"><input type='text' id='final_make' placeholder='Make' readonly style='text-transform:capitalize' />
                     </td>
                 </tr>
                 <tr>
