@@ -95,13 +95,12 @@ Starting again.
             (example: for 25,000 miles, enter "25000")
             <br>
             <br>
+            <div id="zipError" style="color: red; display: none;">Please enter a zip code
+            </div>
             <label>Zip code:
                 <input type="text" id="zip" value="" />
             </label>
             <br>
-            <br>
-            <div id="error" style="color:red">
-            </div>
             <br>
             <button type="button" id='submit'>Submit</button><br><br>
             <br>

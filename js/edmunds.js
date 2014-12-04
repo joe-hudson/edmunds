@@ -191,6 +191,10 @@ $(function() {
     });
 
     $('#submit').click(function(){
-        get_value()
+        if (CAR.locale === "") {
+            $("#zipError").show();
+        } else {
+            get_value()
+        }
     });
 });
