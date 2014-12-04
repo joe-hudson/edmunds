@@ -114,7 +114,7 @@ Starting again.
                 <tr>
                     <td class="label">Year:
                     </td>
-                    <td class="input"><input type='text' id='final_year' value='Year' readonly />
+                    <td class="input"><input type='text' id='final_year' placeholder="Year" readonly />
                     </td>
                 </tr>
                 <tr>
@@ -145,4 +145,3 @@ Starting again.
         </div>
     </body>
 </html>
-
