@@ -33,7 +33,6 @@ function get_makes() {
             $.each(data.makes, function(i, val) {
                 $('#makes').append("<option value='" + data.makes[i].niceName + "'>" + data.makes[i].name + "</option>");
             });
-            $('#makes').html('Select Make');
             $('#makes').removeAttr('disabled');
             $('#vin').attr('disabled', 'disabled');
             $("#mileage").val(CAR.mileage);
