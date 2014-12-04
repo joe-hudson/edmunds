@@ -172,6 +172,7 @@ $(function() {
         CAR.style_id = $(this).val();
         CAR.style = $(this).find("option:selected").html();
         get_style_details();
+        $("#zip").focus();
     });
 
     $('#condition').change(function(){
