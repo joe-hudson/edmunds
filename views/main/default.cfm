@@ -54,17 +54,17 @@ Starting again.
             <br>
             <br>
             <select class="select" id="makes" name="makes" disabled="disabled">
-                <option>Select Make</option>
+                <option></option>
             </select>
             <br>
             <br>
             <select class="select" id="models" name="models" disabled="disabled">
-                <option>Select Model</option>
+                <option></option>
             </select>
             <br>
             <br>
             <select class="select" id="styles" name="styles" disabled="disabled">
-                <option>Select Trim</option>
+                <option></option>
             </select>
             <br>
             <br>
