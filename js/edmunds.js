@@ -194,6 +194,7 @@ $(function() {
         if (CAR.locale === "") {
             $("#zipError").show();
         } else {
+            $("#zipError").hide();
             get_value()
         }
     });
